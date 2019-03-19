@@ -8,7 +8,6 @@ use App\Proxy\HttpKernelProxy;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
@@ -18,6 +17,7 @@ use App\Http\Requests\Api\RegisterRequest;
 use App\Http\Requests\Api\SendVerifyEmailRequest;
 use App\Http\Requests\Api\SendResetEmailRequest;
 use App\Http\Requests\Api\ResetPasswordRequest;
+use App\Http\Requests\Api\RefreshTokenRequest;
 use App\Http\Transformers\UserTransformer;
 use App\Events\LoginEvent;
 use App\Mail\SendVerifyEmail;
@@ -70,11 +70,40 @@ class AuthorizationController extends BaseController
             return $this->sendLockoutResponse($request);
         }
 
-        return $this->requestPasswordGrant($request);
+        $response = $this->proxy->postJson('oauth/token', [
+            'client_id' => config('auth.proxy.client_id'),
+            'client_secret' => config('auth.proxy.client_secret'),
+            'grant_type' => config('auth.proxy.grant_type'),
+            'username' => $request->email,
+            'password' => $request->password,
+            'scopes' => '[*]'
+        ]);
+
+        if ($response->isSuccessful()) {
+            $this->clearLoginAttempts($request);
+
+            event(new LoginEvent($user));
+
+            return $this->respondWithToken($response);
+        }
+
+        $this->incrementLoginAttempts($request);
+        
+        return $this->response->error($response->getContent(), $response->getStatusCode());
     }
 
     public function register(RegisterRequest $request)
     {
+        $registerEnabled = settings()->get('register_enabled', true);
+
+        if (!$registerEnabled) {
+            return $this->response->array([
+                'status_code' => 200,
+                'message' => '当前不允许注册',
+                'code' => 1
+            ]);
+        }
+
         // 验证邮箱激活码
         $tokenKey = static::CACHE_KEY_ACTIVE_EMAIL.$request->token;
         $tokenData = Cache::get($tokenKey);
@@ -99,7 +128,20 @@ class AuthorizationController extends BaseController
         // 标记为已激活
         $user->markEmailAsVerified();
 
-        return $this->requestPasswordGrant($request)->setStatusCode(201);
+        $response = $this->proxy->postJson('oauth/token', [
+            'client_id' => config('auth.proxy.client_id'),
+            'client_secret' => config('auth.proxy.client_secret'),
+            'grant_type' => config('auth.proxy.grant_type'),
+            'username' => $request->email,
+            'password' => $request->password,
+            'scopes' => '[*]'
+        ]);
+
+        if ($response->isSuccessful()) {
+            return $this->respondWithToken($response)->setStatusCode(201);
+        }
+        
+        return $this->response->error($response->getContent(), $response->getStatusCode());
     }
 
     public function sendVerifyEmail(SendVerifyEmailRequest $request)
@@ -158,12 +200,6 @@ class AuthorizationController extends BaseController
                 $user->password = bcrypt($password);
                 $user->updated_at = now();
                 $user->save();
-
-                event(new PasswordReset($user));
-
-                $this->guard()->login($user);
-
-                event(new LoginEvent($user)); //触发login事件
             }
         );
 
@@ -187,9 +223,9 @@ class AuthorizationController extends BaseController
      * Refresh an access token.
      *
      */
-    public function refresh(Request $request)
+    public function refresh(RefreshTokenRequest $request)
     {
-        $token = $request->cookie('refresh_token');
+        $token = $request->token;
 
         if (!$token) {
             return $this->response->errorBadRequest('missing refresh token');
@@ -226,31 +262,6 @@ class AuthorizationController extends BaseController
         } else {
             return $this->response->errorUnauthorized('The token is invalid.');
         }
-    }
-
-    /**
-     * Create a new access token from a password grant client.
-     *
-     */
-    public function requestPasswordGrant(Request $request)
-    {
-        $response = $this->proxy->postJson('oauth/token', [
-            'client_id' => config('auth.proxy.client_id'),
-            'client_secret' => config('auth.proxy.client_secret'),
-            'grant_type' => config('auth.proxy.grant_type'),
-            'username' => $request->email,
-            'password' => $request->password,
-            'scopes' => '[*]'
-        ]);
-
-        if ($response->isSuccessful()) {
-            $this->clearLoginAttempts($request);
-            return $this->respondWithToken($response);
-        }
-
-        $this->incrementLoginAttempts($request);
-        
-        return $this->response->error($response->getContent(), $response->getStatusCode());
     }
 
     /**
