@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+// 验证码
+Route::get('/captcha/{tmp}', 'CaptchaController@create')->name('captcha');
