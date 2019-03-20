@@ -6,7 +6,6 @@ use Auth;
 use Password;
 use App\Proxy\HttpKernelProxy;
 use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Support\Facades\Mail;
@@ -27,6 +26,7 @@ class AuthorizationController extends BaseController
     use ThrottlesLogins;
 
     const CACHE_KEY_ACTIVE_EMAIL = 'activation_token:';
+    const CACHE_KEY_ALLOW_REGISTER = 'temp_register_token:';
 
     /**
      * A tool for proxying requests to the existing application.
@@ -66,7 +66,6 @@ class AuthorizationController extends BaseController
     {
         if ($this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
-
             return $this->sendLockoutResponse($request);
         }
 
@@ -80,10 +79,8 @@ class AuthorizationController extends BaseController
         ]);
 
         if ($response->isSuccessful()) {
-            $this->clearLoginAttempts($request);
-
             event(new LoginEvent($user));
-
+            $this->clearLoginAttempts($request);
             return $this->respondWithToken($response);
         }
 
@@ -95,13 +92,27 @@ class AuthorizationController extends BaseController
     public function register(RegisterRequest $request)
     {
         $registerEnabled = settings()->get('register_enabled', true);
+        $tempToken = $request->temp_token;
 
         if (!$registerEnabled) {
-            return $this->response->array([
-                'status_code' => 200,
-                'message' => '当前不允许注册',
-                'code' => 1
-            ]);
+            if (isset($tempToken)) {
+                $tempRegisterTokenKey = static::CACHE_KEY_ALLOW_REGISTER.$tempToken;
+                if (Cache::has($tempRegisterTokenKey)) {
+                    Cache::forget($tempRegisterTokenKey);
+                } else {
+                    return $this->response->array([
+                        'status_code' => 200,
+                        'message' => '临时注册码不存在或已失效，请检查',
+                        'code' => 1
+                    ]);
+                }
+            } else {
+                return $this->response->array([
+                    'status_code' => 200,
+                    'message' => '当前不允许注册',
+                    'code' => 1
+                ]);
+            }
         }
 
         // 验证邮箱激活码
@@ -149,7 +160,7 @@ class AuthorizationController extends BaseController
         $email = $request->email;
 
         // 获取token超时时间
-        $tokenExpire = Arr::get(config('auth.verify'), 'users.expire') * 60;
+        $tokenExpire = config('auth.verify.users.expire') * 60;
         // 生成激活的token
         $token = Str::random(6);
 
@@ -173,7 +184,7 @@ class AuthorizationController extends BaseController
         );
 
         if ($sendingResponse == Password::INVALID_USER) {
-            return $this->response->errorNotFound('该账号不存在');
+            return $this->response->errorNotFound('该邮箱不存在');
         }
 
         if ($sendingResponse !== Password::RESET_LINK_SENT) {
@@ -225,9 +236,7 @@ class AuthorizationController extends BaseController
      */
     public function refresh(RefreshTokenRequest $request)
     {
-        $token = $request->token;
-
-        if (!$token) {
+        if (!($token = $request->token)) {
             return $this->response->errorBadRequest('missing refresh token');
         }
 
