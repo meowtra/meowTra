@@ -44,10 +44,10 @@ $api->version('v1', [
             'limit' => config('api.rate_limits.verify.limit'),
             'expires' => config('api.rate_limits.verify.expires'),
         ], function($api) {
-            $api->post('sendVerifyEmail', 'AuthorizationController@sendVerifyEmail');
+            $api->post('verify', 'AuthorizationController@sendVerifyEmail');
         });
         // 退出登录
-        $api->get('logout', 'AuthorizationController@logout');
+        $api->post('logout', 'AuthorizationController@logout');
         // 刷新token
         $api->post('refresh', 'AuthorizationController@refresh');
         // 找回密码

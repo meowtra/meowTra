@@ -39,6 +39,17 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    public function teams()
+    {
+        return $this->belongsToMany('App\Models\Team')->withTimestamps();
+    }
+
+    
+    public function projects()
+    {
+        return $this->belongsToMany('App\Models\Project')->withTimestamps();
+    }
+
     /**
      * Send the password reset notification.
      *

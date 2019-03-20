@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "948a3119ac0ac6611e65b3805262438a",
+    "content-hash": "36694205058efde956b18069c5779569",
     "packages": [
         {
             "name": "arcanedev/laravel-settings",
@@ -131,6 +131,66 @@
                 "support"
             ],
             "time": "2019-02-27T18:33:30+00:00"
+        },
+        {
+            "name": "cviebrock/eloquent-taggable",
+            "version": "3.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cviebrock/eloquent-taggable.git",
+                "reference": "03f7a36db33df7dc22243a9680ba82925ebc9274"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cviebrock/eloquent-taggable/zipball/03f7a36db33df7dc22243a9680ba82925ebc9274",
+                "reference": "03f7a36db33df7dc22243a9680ba82925ebc9274",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/config": "~5.8.0",
+                "illuminate/database": "~5.8.0",
+                "illuminate/support": "~5.8.0",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "limedeck/phpunit-detailed-printer": "^4.1",
+                "orchestra/database": "3.8.x-dev",
+                "orchestra/testbench": "v3.8.*",
+                "phpunit/phpunit": "^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Cviebrock\\EloquentTaggable\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Cviebrock\\EloquentTaggable\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Colin Viebrock",
+                    "email": "colin@viebrock.ca"
+                }
+            ],
+            "description": "Easy ability to tag your Eloquent models in Laravel 5.",
+            "homepage": "https://github.com/cviebrock/eloquent-taggable",
+            "keywords": [
+                "Taggable",
+                "eloquent",
+                "laravel",
+                "tag",
+                "tagging"
+            ],
+            "time": "2019-03-16T22:07:08+00:00"
         },
         {
             "name": "defuse/php-encryption",

@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.1.3",
         "arcanedev/laravel-settings": "^5.0",
+        "cviebrock/eloquent-taggable": "^3.5",
         "dingo/api": "^2.1",
         "fideloper/proxy": "^4.0",
         "gregwar/captcha": "^1.1",
