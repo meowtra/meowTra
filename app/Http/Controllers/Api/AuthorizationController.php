@@ -79,7 +79,6 @@ class AuthorizationController extends BaseController
         ]);
 
         if ($response->isSuccessful()) {
-            event(new LoginEvent($user));
             $this->clearLoginAttempts($request);
             return $this->respondWithToken($response);
         }
