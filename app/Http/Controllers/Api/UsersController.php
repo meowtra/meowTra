@@ -9,11 +9,6 @@ use App\Http\Requests\Api\UserRequest;
 
 class UsersController extends BaseController
 {
-    public function me()
-    {
-        return $this->response->item($this->user(), new UserTransformer());
-    }
-
     public function update(UserRequest $request)
     {
         $user = $this->user();
