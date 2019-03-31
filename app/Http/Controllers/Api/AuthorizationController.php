@@ -283,7 +283,8 @@ class AuthorizationController extends BaseController
         return $this->response->array([
             'access_token' => $data->access_token,
             'token_type' => $data->token_type,
-            'expires_in' => $data->expires_in
+            'expires_in' => $data->expires_in,
+            'refresh_token' => $data->refresh_token
         ]);
     }
 
