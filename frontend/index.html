@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>meow-tra</title>
-  <script>(function() { document.write('<script src="' + '/assets/assets.js?v=' + +new Date() + '"><\/script>')})()</script>
+  <script>(function() { document.write('<script src="' + '/dist/assets.js?v=' + +new Date() + '"><\/script>')})()</script>
   <script>(function() { document.write('<link rel="stylesheet" href="' + window.WEBPACK_ASSETS.main.css + '">');})();</script>
 </head>
 <body>
@@ -14,9 +14,9 @@
       'use strict';
       var prefix = window.env === 'development' ? '.js' : '.min.js';
       var scripts = [
-        '/assets/lib/vue' + prefix,
-        '/assets/lib/vue-router' + prefix,
-        '/assets/lib/vuex' + prefix,
+        '/static/lib/vue' + prefix,
+        '/static/lib/vue-router' + prefix,
+        '/static/lib/vuex' + prefix,
         window.WEBPACK_ASSETS.manifest.js,
         window.WEBPACK_ASSETS.vendors.js,
         window.WEBPACK_ASSETS.main.js,

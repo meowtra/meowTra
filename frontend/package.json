@@ -1,0 +1,46 @@
+{
+  "name": "meow-translate-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack --watch --config webpack/dev.js",
+    "test": "webpack --config webpack/test.js",
+    "build": "webpack --config webpack/pro.js"
+  },
+  "author": "wing-kai",
+  "license": "ISC",
+  "dependencies": {
+    "calculatorjs": "^1.1.2",
+    "deepmerge": "^3.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.3.0",
+    "@babel/plugin-proposal-decorators": "^7.3.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/plugin-syntax-jsx": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/runtime": "^7.3.1",
+    "assets-webpack-plugin": "^3.9.7",
+    "babel-eslint": "^10.0.1",
+    "babel-helper-vue-jsx-merge-props": "^2.0.3",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-plugin-transform-vue-jsx": "^4.0.1",
+    "css-loader": "^2.1.0",
+    "eslint": "^5.12.1",
+    "eslint-loader": "^2.1.1",
+    "mini-css-extract-plugin": "^0.5.0",
+    "postcss-loader": "^3.0.0",
+    "postcss-preset-env": "^6.5.0",
+    "style-loader": "^0.23.1",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "webpack": "^4.29.0",
+    "webpack-bundle-analyzer": "^3.0.4",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14"
+  }
+}
