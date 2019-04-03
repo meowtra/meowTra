@@ -30,7 +30,7 @@ const teamList = {
             <h1 class="display-4">首页</h1>
           </div>
           <div class="col-7 text-right">
-            <button class="btn btn-md btn-primary ml-2">新建</button>
+            <router-link to="/team/create" class="btn btn-md btn-primary ml-2">新建</router-link>
           </div>
         </div>
         <br/>

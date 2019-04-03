@@ -109,7 +109,7 @@ const projectList = {
             <button type="button" class="btn btn-lg btn-block btn-primary mb-3">新建项目</button>
           </div>
           <div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-            <button type="button" class="btn btn-lg btn-block btn-secondary">团队设置</button>
+            <router-link to="/team/123/setting" class="btn btn-lg btn-block btn-secondary">团队设置</router-link>
           </div>
         </div>
       </div>

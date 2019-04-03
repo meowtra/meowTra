@@ -13,7 +13,7 @@ const rootMasterPage = {
 }
 
 const routes = [{
-  path: '/auth/(|login|register)',
+  path: '/auth/(|login|register|forgot-password)',
   component: rootMasterPage,
   children: [{
     path: '/auth/login',
@@ -32,11 +32,17 @@ const routes = [{
   path: '/',
   component: () => import('@/pages/master'),
   children: [{
+    path: 'auth/my',
+    component: () => import('@/pages/authorize/my')
+  }, {
     path: '',
     redirect: '/team'
   }, {
     path: 'team',
     component: () => import('@/pages/team')
+  }, {
+    path: 'team/create',
+    component: () => import('@/pages/team/create')
   }, {
     path: 'team/:teamId',
     component: () => import('@/pages/project')

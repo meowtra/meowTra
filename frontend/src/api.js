@@ -4,5 +4,6 @@ export default {
   REGISTER: '/api/auth/register',
   SEND_VERIFY_CODE: '/api/auth/verify',
   SEND_RESET_PASSWORD_CODE: '/api/auth/recovery',
-  RESET_PASSWORD: '/api/auth/reset'
+  RESET_PASSWORD: '/api/auth/reset',
+  ACCOUNT_INFO: '/api/auth/me'
 }
