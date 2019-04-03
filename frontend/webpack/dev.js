@@ -2,6 +2,7 @@ const webpack = require('webpack')
 const path = require('path')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const AssetsPlugin = require('assets-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const baseConfig = require('./base')
 
@@ -14,6 +15,7 @@ const config = Object.assign({}, baseConfig, {
     filename: '[name].[hash].js'
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: "[name].[chunkhash].css",
       chunkFilename: "[id].[chunkhash].css"
