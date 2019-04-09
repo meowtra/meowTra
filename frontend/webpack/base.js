@@ -17,11 +17,39 @@ module.exports = {
   },
   module: {
     rules: [{
+      test: /\.useable\.styl$/,
+      use: [
+        // 'style-loader/useable',
+        // 'css-loader',
+        // 'stylus-loader',
+        'style-loader/useable',
+        'css-loader',
+        {
+          loader: "postcss-loader",
+          options: {
+            ident: 'postcss',
+            plugins: [
+              require('autoprefixer')({
+                'browsers': [
+                  '> 1%',
+                  'last 10 versions',
+                  'not ie <= 8',
+                  'Firefox >= 20'
+                ]
+              })
+            ]
+          }
+        },
+        'stylus-loader'
+      ]
+    }, {
       test: /\.styl$/,
+      exclude: /\.useable\.styl$/,
       use: [
         'style-loader',
         MiniCssExtractPlugin.loader,
-        'css-loader', {
+        'css-loader',
+        {
           loader: "postcss-loader",
           options: {
             ident: 'postcss',

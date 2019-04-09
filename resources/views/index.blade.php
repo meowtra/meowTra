@@ -2,9 +2,9 @@
 <html lang="zh-cn">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
   <title>meow-tra</title>
-  <script>(function() { document.write('<script src="' + '/assets/assets.js?v=' + +new Date() + '"><\/script>')})()</script>
+  <script>(function() { document.write('<script src="' + '/assets/app/assets.js?v=' + +new Date() + '"><\/script>')})()</script>
   <script>(function() { document.write('<link rel="stylesheet" href="' + window.WEBPACK_ASSETS.main.css + '">');})();</script>
 </head>
 <body>

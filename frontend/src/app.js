@@ -35,7 +35,7 @@ const app = {
     )
   },
   mounted() {
-    this.$darkMode = true
+    this.$darkMode = false
 
     const succeed = this.$http.login()
 

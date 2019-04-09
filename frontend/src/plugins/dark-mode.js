@@ -7,7 +7,7 @@ const installPlugin = Vue => {
 
   link.id = BOOTSTRAP_STYLE_LINK_ID
   link.rel = 'stylesheet'
-  
+
   if (localStorage.getItem(KEY) === '1') {
     darkMode = true
     link.href = '/assets/lib/bootstrap-cyborg.min.css'

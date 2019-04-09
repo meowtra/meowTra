@@ -51,6 +51,9 @@ const routes = [{
     component: () => import('@/pages/team/setting')
   }]
 }, {
+  path: '/demo',
+  component: () => import('@/pages/editor')
+}, {
   path: '*',
   component: () => import('@/pages/error/404')
 }]

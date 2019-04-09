@@ -10,8 +10,8 @@ const config = Object.assign({}, baseConfig, {
   mode: 'development',
   devtool: 'cheap-module-eval-source-map',
   output: {
-    path: path.join(__dirname, '../../public/assets'), // 出口目录，dist文件
-    publicPath: '/assets/',
+    path: path.join(__dirname, '../../public/assets/app'), // 出口目录，dist文件
+    publicPath: '/assets/app/',
     filename: '[name].[hash].js'
   },
   plugins: [
@@ -21,7 +21,7 @@ const config = Object.assign({}, baseConfig, {
       chunkFilename: "[id].[chunkhash].css"
     }),
     new AssetsPlugin({
-      path: path.join(__dirname, '../../public/assets'),
+      path: path.join(__dirname, '../../public/assets/app'),
       filename: 'assets.js',
       processOutput: assets => 'window.env="development";window.WEBPACK_ASSETS=' + JSON.stringify(assets)
     }),
