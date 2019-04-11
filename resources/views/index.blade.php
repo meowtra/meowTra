@@ -9,6 +9,7 @@
 </head>
 <body>
   <div id="app"></div>
+  <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
   <script>
     (function() {
       'use strict';
